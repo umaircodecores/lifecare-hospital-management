@@ -843,6 +843,10 @@ app.get('*', (req, res) => {
 });
 
 /* ── Start server ───────────────────────────────────────────────── */
-app.listen(PORT, () => {
-    console.log(`\n🏥  LifeCare HMS running at  http://localhost:${PORT}\n`);
-});
+if (!process.env.VERCEL) {
+    app.listen(PORT, () => {
+        console.log(`\n🏥  LifeCare HMS running at  http://localhost:${PORT}\n`);
+    });
+}
+
+module.exports = app;
