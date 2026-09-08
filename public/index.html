@@ -1,0 +1,1828 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LifeCare Medical Network – Hospital Management System">
+    <title>LifeCare Medical Network</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <style>
+        /* ── CSS Reset & Variables ───────────────────────────────────── */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0
+        }
+
+        :root {
+            --bg: #f0f4f8;
+            --surface: #ffffff;
+            --card: #ffffff;
+            --card-hover: #f5f8fb;
+            --border: #d8e2ec;
+            --text: #1a2332;
+            --text-muted: #6b7a8d;
+            --text-dim: #8c9bae;
+            --primary: #0a5c8e;
+            --primary-dark: #07496f;
+            --primary-light: #0e7ab8;
+            --primary-glow: rgba(10, 92, 142, .08);
+            --accent: #2c8f7a;
+            --success: #198754;
+            --warning: #e8a317;
+            --danger: #dc3545;
+            --gradient: linear-gradient(135deg, #0a5c8e 0%, #2c8f7a 100%);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --shadow: 0 4px 20px rgba(10, 92, 142, .08);
+            --font: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        html {
+            font-size: 14px
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden
+        }
+
+        /* ── Scrollbar ───────────────────────────────────────────────── */
+        ::-webkit-scrollbar {
+            width: 6px
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--surface)
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px
+        }
+
+        /* ── Utilities ───────────────────────────────────────────────── */
+        .flex {
+            display: flex
+        }
+
+        .flex-col {
+            flex-direction: column
+        }
+
+        .items-center {
+            align-items: center
+        }
+
+        .gap-sm {
+            gap: 8px
+        }
+
+        .gap-md {
+            gap: 16px
+        }
+
+        .gap-lg {
+            gap: 24px
+        }
+
+        .text-muted {
+            color: var(--text-muted)
+        }
+
+        .text-dim {
+            color: var(--text-dim)
+        }
+
+        .text-success {
+            color: var(--success)
+        }
+
+        .text-warning {
+            color: var(--warning)
+        }
+
+        .text-danger {
+            color: var(--danger)
+        }
+
+        .fw-500 {
+            font-weight: 500
+        }
+
+        .fw-600 {
+            font-weight: 600
+        }
+
+        .fw-700 {
+            font-weight: 700
+        }
+
+        .mt-sm {
+            margin-top: 8px
+        }
+
+        .mt-md {
+            margin-top: 16px
+        }
+
+        .mt-lg {
+            margin-top: 24px
+        }
+
+        .hidden {
+            display: none !important
+        }
+
+        /* ── Buttons ─────────────────────────────────────────────────── */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: var(--font);
+            font-weight: 600;
+            font-size: .875rem;
+            cursor: pointer;
+            transition: all .2s;
+            text-decoration: none;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow)
+        }
+
+        .btn:active {
+            transform: translateY(0)
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: #fff
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: #fff
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: #111
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: #fff
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border)
+        }
+
+        .btn-ghost:hover {
+            color: var(--text);
+            border-color: var(--text-muted)
+        }
+
+        .btn-sm {
+            padding: 6px 14px;
+            font-size: .8rem
+        }
+
+        .btn-xs {
+            padding: 4px 10px;
+            font-size: .75rem
+        }
+
+        /* ── Form Elements ───────────────────────────────────────────── */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px
+        }
+
+        .form-group label {
+            font-weight: 500;
+            font-size: .8rem;
+            color: var(--text-muted)
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px
+        }
+
+        input,
+        select,
+        textarea {
+            padding: 10px 14px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text);
+            font-family: var(--font);
+            font-size: .875rem;
+            transition: border-color .2s;
+            width: 100%;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary)
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px
+        }
+
+        /* ── Login Screen ────────────────────────────────────────────── */
+        #loginScreen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: radial-gradient(ellipse at top, #dbeafe 0%, var(--bg) 70%);
+        }
+
+        .login-card {
+            background: var(--card);
+            padding: 48px 40px;
+            border-radius: 20px;
+            width: 420px;
+            max-width: 92vw;
+            box-shadow: 0 12px 48px rgba(0, 0, 0, .5);
+            border: 1px solid var(--border);
+        }
+
+        .login-logo {
+            text-align: center;
+            margin-bottom: 32px
+        }
+
+        .login-logo h1 {
+            font-size: 1.6rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .login-logo p {
+            color: var(--text-muted);
+            font-size: .85rem;
+            margin-top: 4px
+        }
+
+        .login-card .form-group {
+            margin-bottom: 18px
+        }
+
+        .login-card .btn {
+            width: 100%;
+            justify-content: center;
+            padding: 12px;
+            font-size: 1rem
+        }
+
+        #loginError {
+            color: var(--danger);
+            font-size: .8rem;
+            text-align: center;
+            margin-top: 8px;
+            min-height: 1.2em
+        }
+
+        /* ── App Layout ──────────────────────────────────────────────── */
+        #appScreen {
+            display: none
+        }
+
+        .app-layout {
+            display: flex;
+            min-height: 100vh
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            padding: 24px 20px;
+            border-bottom: 1px solid var(--border)
+        }
+
+        .sidebar-brand h2 {
+            font-size: 1.1rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .sidebar-brand small {
+            color: var(--text-dim);
+            font-size: .7rem
+        }
+
+        .sidebar-nav {
+            flex: 1;
+            padding: 16px 12px;
+            overflow-y: auto
+        }
+
+        .nav-section {
+            margin-bottom: 20px
+        }
+
+        .nav-section-title {
+            font-size: .65rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-dim);
+            padding: 0 12px;
+            margin-bottom: 8px
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border-radius: var(--radius-sm);
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all .15s;
+            font-size: .875rem;
+            font-weight: 500;
+        }
+
+        .nav-item:hover {
+            background: var(--card);
+            color: var(--text)
+        }
+
+        .nav-item.active {
+            background: var(--primary-glow);
+            color: var(--primary)
+        }
+
+        .nav-item .icon {
+            font-size: 1.1rem;
+            width: 22px;
+            text-align: center
+        }
+
+        .sidebar-footer {
+            padding: 16px;
+            border-top: 1px solid var(--border)
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px;
+            border-radius: var(--radius-sm)
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: .8rem;
+            color: #fff;
+        }
+
+        .user-details {
+            flex: 1
+        }
+
+        .user-details .name {
+            font-size: .8rem;
+            font-weight: 600
+        }
+
+        .user-details .role {
+            font-size: .7rem;
+            color: var(--text-dim)
+        }
+
+        /* Main content */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 28px 32px;
+            min-height: 100vh
+        }
+
+        .page-header {
+            margin-bottom: 28px
+        }
+
+        .page-header h1 {
+            font-size: 1.6rem;
+            font-weight: 700
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-size: .9rem;
+            margin-top: 4px
+        }
+
+        /* Cards */
+        .card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 24px;
+            transition: border-color .2s;
+        }
+
+        .card:hover {
+            border-color: var(--primary-light)
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 28px
+        }
+
+        .stat-card .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent
+        }
+
+        .stat-card .stat-label {
+            font-size: .8rem;
+            color: var(--text-muted);
+            margin-top: 4px
+        }
+
+        /* Tables */
+        .table-wrap {
+            overflow-x: auto;
+            border-radius: var(--radius);
+            border: 1px solid var(--border)
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse
+        }
+
+        th {
+            background: var(--surface);
+            color: var(--text-muted);
+            font-size: .75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+            padding: 12px 16px;
+            text-align: left;
+            position: sticky;
+            top: 0
+        }
+
+        td {
+            padding: 12px 16px;
+            border-top: 1px solid var(--border);
+            font-size: .85rem
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, .02)
+        }
+
+        /* Badges */
+        .badge {
+            display: inline-flex;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: .7rem;
+            font-weight: 600;
+        }
+
+        .badge-scheduled {
+            background: rgba(10, 92, 142, .1);
+            color: var(--primary)
+        }
+
+        .badge-completed {
+            background: rgba(25, 135, 84, .1);
+            color: var(--success)
+        }
+
+        .badge-cancelled {
+            background: rgba(220, 53, 69, .1);
+            color: var(--danger)
+        }
+
+        .badge-pending {
+            background: rgba(232, 163, 23, .1);
+            color: var(--warning)
+        }
+
+        .badge-paid {
+            background: rgba(25, 135, 84, .1);
+            color: var(--success)
+        }
+
+        .badge-male {
+            background: rgba(10, 92, 142, .1);
+            color: var(--primary)
+        }
+
+        .badge-female {
+            background: rgba(236, 72, 153, .1);
+            color: #ec4899
+        }
+
+        .badge-other {
+            background: rgba(139, 92, 246, .1);
+            color: #8b5cf6
+        }
+
+        /* Typeahead / Autocomplete */
+        .autocomplete-wrap {
+            position: relative
+        }
+
+        .autocomplete-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+            max-height: 220px;
+            overflow-y: auto;
+            z-index: 50;
+            display: none;
+        }
+
+        .autocomplete-list.show {
+            display: block
+        }
+
+        .autocomplete-item {
+            padding: 10px 14px;
+            cursor: pointer;
+            font-size: .85rem;
+            border-bottom: 1px solid var(--border);
+            transition: background .1s;
+        }
+
+        .autocomplete-item:hover {
+            background: var(--card-hover)
+        }
+
+        .autocomplete-item .ac-name {
+            font-weight: 600
+        }
+
+        .autocomplete-item .ac-meta {
+            font-size: .75rem;
+            color: var(--text-muted)
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, .6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 500;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-overlay.show {
+            display: flex
+        }
+
+        .modal {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            width: 600px;
+            max-width: 92vw;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 24px 64px rgba(0, 0, 0, .5);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 0;
+            background: var(--card);
+            z-index: 2;
+        }
+
+        .modal-header h3 {
+            font-size: 1.1rem;
+            font-weight: 700
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-close:hover {
+            background: var(--danger);
+            color: #fff;
+            border-color: var(--danger)
+        }
+
+        .modal-body {
+            padding: 24px
+        }
+
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px
+        }
+
+        /* Prescription item rows */
+        .rx-item-row {
+            display: grid;
+            grid-template-columns: 2fr 80px 2fr 32px;
+            gap: 8px;
+            align-items: end;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .rx-item-row:last-child {
+            border-bottom: none
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px
+        }
+
+        .toast {
+            padding: 14px 20px;
+            border-radius: var(--radius-sm);
+            font-size: .85rem;
+            font-weight: 500;
+            box-shadow: var(--shadow);
+            animation: slideIn .3s ease;
+            min-width: 280px;
+        }
+
+        .toast-success {
+            background: #d1e7dd;
+            color: #0f5132;
+            border: 1px solid #badbcc
+        }
+
+        .toast-error {
+            background: #f8d7da;
+            color: #842029;
+            border: 1px solid #f5c2c7
+        }
+
+        .toast-info {
+            background: #cff4fc;
+            color: #087990;
+            border: 1px solid #b6effb
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1
+            }
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 48px 20px;
+            color: var(--text-dim)
+        }
+
+        .empty-state .icon {
+            font-size: 3rem;
+            margin-bottom: 12px
+        }
+
+        .empty-state p {
+            font-size: .9rem
+        }
+
+        /* ── Print styles ─────────────────────────────────────────────── */
+        @media print {
+            body {
+                background: #fff !important;
+                color: #000 !important
+            }
+
+            .sidebar,
+            .toast-container,
+            .modal-close,
+            .modal-footer,
+            .no-print {
+                display: none !important
+            }
+
+            .modal-overlay {
+                position: static !important;
+                background: none !important
+            }
+
+            .modal {
+                box-shadow: none !important;
+                border: none !important;
+                max-height: none !important;
+                width: 100% !important;
+                max-width: 100% !important
+            }
+
+            .modal-header {
+                border-bottom: 2px solid #000 !important;
+                background: #fff !important
+            }
+
+            .card,
+            .table-wrap {
+                border: 1px solid #ccc !important
+            }
+
+            th {
+                background: #f3f4f6 !important;
+                color: #000 !important
+            }
+
+            td {
+                color: #000 !important
+            }
+
+            .badge {
+                border: 1px solid #999 !important
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ════════════════════════════════════════════════════════════════
+     LOGIN SCREEN
+     ════════════════════════════════════════════════════════════════ -->
+    <div id="loginScreen">
+        <div class="login-card">
+            <div class="login-logo">
+                <h1>🏥 LifeCare Medical Network</h1>
+                <p>Hospital Management System</p>
+            </div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginUser">Username</label>
+                    <input id="loginUser" type="text" placeholder="Enter username" autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="loginPass">Password</label>
+                    <input id="loginPass" type="password" placeholder="Enter password" autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary mt-md">Sign In</button>
+                <div id="loginError"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════
+     MAIN APPLICATION
+     ════════════════════════════════════════════════════════════════ -->
+    <div id="appScreen">
+        <div class="app-layout">
+
+            <!-- ── Sidebar ──────────────────────────────────────────────── -->
+            <aside class="sidebar">
+                <div class="sidebar-brand">
+                    <h2>🏥 LifeCare</h2>
+                    <small>Medical Network HMS</small>
+                </div>
+                <nav class="sidebar-nav" id="sidebarNav"></nav>
+                <div class="sidebar-footer">
+                    <div class="user-info">
+                        <div class="user-avatar" id="userAvatar"></div>
+                        <div class="user-details">
+                            <div class="name" id="userName"></div>
+                            <div class="role" id="userRole"></div>
+                        </div>
+                    </div>
+                    <button class="btn btn-ghost btn-sm mt-sm" style="width:100%;justify-content:center"
+                        onclick="logout()">🚪 Sign Out</button>
+                </div>
+            </aside>
+
+            <!-- ── Main Content ─────────────────────────────────────────── -->
+            <main class="main-content" id="mainContent"></main>
+
+        </div>
+    </div>
+
+    <!-- ── Toast Container ──────────────────────────────────────────── -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- ── Modal Container ──────────────────────────────────────────── -->
+    <div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+        <div class="modal" id="modalContent"></div>
+    </div>
+
+    <script>
+        /* ═══════════════════════════════════════════════════════════════
+           GLOBALS
+           ═══════════════════════════════════════════════════════════════ */
+        let TOKEN = '', USER = null;
+        const API = '';
+
+        /* ── Helpers ─────────────────────────────────────────────────── */
+        async function api(url, opts = {}) {
+            const headers = { 'Content-Type': 'application/json' };
+            if (TOKEN) headers['Authorization'] = `Bearer ${TOKEN}`;
+            const res = await fetch(API + url, { ...opts, headers });
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.error || 'Request failed');
+            return data;
+        }
+
+        function toast(msg, type = 'success') {
+            const el = document.createElement('div');
+            el.className = `toast toast-${type}`;
+            el.textContent = msg;
+            document.getElementById('toastContainer').appendChild(el);
+            setTimeout(() => el.remove(), 4000);
+        }
+
+        function formatDate(d) {
+            if (!d) return '—';
+            return new Date(d).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+
+        function formatTime(t) {
+            if (!t) return '—';
+            const [h, m] = t.split(':');
+            const hr = parseInt(h);
+            return `${hr > 12 ? hr - 12 : hr}:${m} ${hr >= 12 ? 'PM' : 'AM'}`;
+        }
+
+        function statusBadge(s) {
+            const cls = { Scheduled: 'badge-scheduled', Completed: 'badge-completed', Cancelled: 'badge-cancelled', Paid: 'badge-paid', Pending: 'badge-pending' };
+            return `<span class="badge ${cls[s] || ''}">${s}</span>`;
+        }
+
+        function genderBadge(g) {
+            if (!g) return '';
+            const cls = { Male: 'badge-male', Female: 'badge-female', Other: 'badge-other' };
+            return `<span class="badge ${cls[g] || ''}">${g}</span>`;
+        }
+
+        function calcAge(dob) {
+            if (!dob) return '—';
+            const birth = new Date(dob);
+            const today = new Date();
+            let age = today.getFullYear() - birth.getFullYear();
+            if (today < new Date(today.getFullYear(), birth.getMonth(), birth.getDate())) age--;
+            return age;
+        }
+
+        /* ── Modal ───────────────────────────────────────────────────── */
+        function openModal(html) {
+            document.getElementById('modalContent').innerHTML = html;
+            document.getElementById('modalOverlay').classList.add('show');
+        }
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('show');
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           AUTH
+           ═══════════════════════════════════════════════════════════════ */
+        document.getElementById('loginForm').addEventListener('submit', async e => {
+            e.preventDefault();
+            const errEl = document.getElementById('loginError');
+            errEl.textContent = '';
+            try {
+                const data = await api('/api/login', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        username: document.getElementById('loginUser').value.trim(),
+                        password: document.getElementById('loginPass').value
+                    })
+                });
+                TOKEN = data.token;
+                USER = data.user;
+                localStorage.setItem('token', TOKEN);
+                localStorage.setItem('user', JSON.stringify(USER));
+                enterApp();
+            } catch (err) { errEl.textContent = err.message; }
+        });
+
+        function logout() {
+            TOKEN = ''; USER = null;
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            document.getElementById('appScreen').style.display = 'none';
+            document.getElementById('loginScreen').style.display = 'flex';
+        }
+
+        function enterApp() {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('appScreen').style.display = 'block';
+            document.getElementById('userName').textContent = USER.username;
+            document.getElementById('userRole').textContent = USER.role;
+            document.getElementById('userAvatar').textContent = USER.username.charAt(0).toUpperCase();
+            buildSidebar();
+            // Navigate to first item
+            const firstNav = document.querySelector('.nav-item');
+            if (firstNav) firstNav.click();
+        }
+
+        // Auto-login from localStorage
+        (function autoLogin() {
+            const t = localStorage.getItem('token');
+            const u = localStorage.getItem('user');
+            if (t && u) { TOKEN = t; USER = JSON.parse(u); enterApp(); }
+        })();
+
+        /* ═══════════════════════════════════════════════════════════════
+           SIDEBAR NAVIGATION
+           ═══════════════════════════════════════════════════════════════ */
+        function buildSidebar() {
+            const role = USER.role;
+            const nav = document.getElementById('sidebarNav');
+            let html = '';
+
+            const sections = [];
+
+            if (role === 'Admin') {
+                sections.push({ title: 'Overview', items: [{ id: 'dashboard', icon: '📊', label: 'Dashboard' }] });
+                sections.push({
+                    title: 'Operations', items: [
+                        { id: 'patients', icon: '👤', label: 'Patients' },
+                        { id: 'appointments', icon: '📅', label: 'Appointments' },
+                        { id: 'pharmacy', icon: '💊', label: 'Pharmacy' },
+                        { id: 'invoices', icon: '💷', label: 'Invoices' },
+                    ]
+                });
+                sections.push({
+                    title: 'Administration', items: [
+                        { id: 'doctors', icon: '🩺', label: 'Doctors' },
+                        { id: 'users', icon: '👥', label: 'System Users' },
+                        { id: 'reports', icon: '📈', label: 'Reports' },
+                    ]
+                });
+            } else if (role === 'Receptionist') {
+                sections.push({
+                    title: 'Front Desk', items: [
+                        { id: 'patients', icon: '👤', label: 'Patients' },
+                        { id: 'appointments', icon: '📅', label: 'Book Appointment' },
+                    ]
+                });
+            } else if (role === 'Doctor') {
+                sections.push({
+                    title: 'My Clinic', items: [
+                        { id: 'doctor-today', icon: '📋', label: "Today's Appointments" },
+                    ]
+                });
+            } else if (role === 'BillingClerk') {
+                sections.push({
+                    title: 'Billing', items: [
+                        { id: 'invoices', icon: '💷', label: 'Unpaid Invoices' },
+                        { id: 'reports', icon: '📈', label: 'Reports' },
+                    ]
+                });
+            }
+
+            for (const sec of sections) {
+                html += `<div class="nav-section"><div class="nav-section-title">${sec.title}</div>`;
+                for (const item of sec.items) {
+                    html += `<div class="nav-item" data-page="${item.id}" onclick="navigate('${item.id}', this)">
+                       <span class="icon">${item.icon}</span>${item.label}
+                     </div>`;
+                }
+                html += '</div>';
+            }
+            nav.innerHTML = html;
+        }
+
+        let currentPage = '';
+        function navigate(page, el) {
+            currentPage = page;
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            if (el) el.classList.add('active');
+            loadPage(page);
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           PAGE ROUTER
+           ═══════════════════════════════════════════════════════════════ */
+        function loadPage(page) {
+            const mc = document.getElementById('mainContent');
+            switch (page) {
+                case 'dashboard': return renderDashboard(mc);
+                case 'patients': return renderPatients(mc);
+                case 'appointments': return renderAppointments(mc);
+                case 'doctor-today': return renderDoctorToday(mc);
+                case 'pharmacy': return renderPharmacy(mc);
+                case 'invoices': return renderInvoices(mc);
+                case 'doctors': return renderDoctors(mc);
+                case 'users': return renderUsers(mc);
+                case 'reports': return renderReports(mc);
+                default: mc.innerHTML = '<div class="empty-state"><p>Page not found</p></div>';
+            }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           DASHBOARD (Admin)
+           ═══════════════════════════════════════════════════════════════ */
+        async function renderDashboard(mc) {
+            mc.innerHTML = `
+      <div class="page-header"><h1>Dashboard</h1><p>LifeCare Medical Network overview</p></div>
+      <div class="card-grid" id="dashStats">
+        <div class="card stat-card"><div class="stat-value">—</div><div class="stat-label">Loading…</div></div>
+      </div>`;
+            try {
+                const [patients, doctors, pharmacy, invoices] = await Promise.all([
+                    api('/api/patients?search='),
+                    api('/api/doctors'),
+                    api('/api/pharmacy'),
+                    api('/api/invoices/unpaid'),
+                ]);
+                const lowStock = pharmacy.filter(m => m.StockLevel <= m.ReorderLevel);
+                document.getElementById('dashStats').innerHTML = `
+          <div class="card stat-card"><div class="stat-value">${patients.length}</div><div class="stat-label">Registered Patients</div></div>
+          <div class="card stat-card"><div class="stat-value">${doctors.length}</div><div class="stat-label">Doctors</div></div>
+          <div class="card stat-card"><div class="stat-value">${invoices.length}</div><div class="stat-label">Unpaid Invoices</div></div>
+          <div class="card stat-card"><div class="stat-value">${lowStock.length}</div><div class="stat-label">Low Stock Alerts</div></div>
+          <div class="card stat-card"><div class="stat-value">${pharmacy.length}</div><div class="stat-label">Medicines in Stock</div></div>
+          <div class="card stat-card"><div class="stat-value">£${invoices.reduce((s, i) => s + parseFloat(i.Amount), 0).toFixed(2)}</div><div class="stat-label">Outstanding Amount</div></div>`;
+            } catch (err) { toast(err.message, 'error'); }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           PATIENTS
+           ═══════════════════════════════════════════════════════════════ */
+        async function renderPatients(mc) {
+            mc.innerHTML = `
+      <div class="page-header flex" style="justify-content:space-between;align-items:start">
+        <div><h1>Patients</h1><p>Search and manage patient records</p></div>
+        <button class="btn btn-primary" onclick="openRegisterPatientModal()">+ Register Patient</button>
+      </div>
+      <div class="card" style="margin-bottom:20px">
+        <input id="patientSearch" type="text" placeholder="🔍 Search by name or NHS number…" oninput="searchPatients()">
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Name</th><th>NHS Number</th><th>DOB</th><th>Age</th><th>Gender</th><th>Phone</th><th>Email</th></tr></thead>
+        <tbody id="patientsTable"><tr><td colspan="7" class="text-muted" style="text-align:center">Type to search…</td></tr></tbody>
+      </table></div>`;
+        }
+
+        let searchTimeout;
+        async function searchPatients() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(async () => {
+                const q = document.getElementById('patientSearch').value.trim();
+                if (!q) { document.getElementById('patientsTable').innerHTML = '<tr><td colspan="7" class="text-muted" style="text-align:center">Type to search…</td></tr>'; return; }
+                try {
+                    const data = await api(`/api/patients?search=${encodeURIComponent(q)}`);
+                    if (data.length === 0) { document.getElementById('patientsTable').innerHTML = '<tr><td colspan="7" class="text-muted" style="text-align:center">No patients found</td></tr>'; return; }
+                    document.getElementById('patientsTable').innerHTML = data.map(p => `
+              <tr>
+                <td class="fw-600">${p.FirstName} ${p.LastName}</td>
+                <td>${p.NHSNumber}</td>
+                <td>${formatDate(p.DOB)}</td>
+                <td>${p.Age}</td>
+                <td>${genderBadge(p.Gender)}</td>
+                <td>${p.Phone}</td>
+                <td>${p.Email}</td>
+              </tr>`).join('');
+                } catch (err) { toast(err.message, 'error'); }
+            }, 300);
+        }
+
+        function openRegisterPatientModal() {
+            openModal(`
+      <div class="modal-header"><h3>Register New Patient</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group"><label>First Name *</label><input id="regFirst" required></div>
+          <div class="form-group"><label>Last Name *</label><input id="regLast" required></div>
+        </div>
+        <div class="form-row mt-sm">
+          <div class="form-group"><label>NHS Number *</label><input id="regNHS" placeholder="123 456 7890"></div>
+          <div class="form-group"><label>Date of Birth *</label><input id="regDOB" type="date"></div>
+        </div>
+        <div class="form-row mt-sm">
+          <div class="form-group"><label>Gender</label>
+            <select id="regGender"><option value="">—</option><option>Male</option><option>Female</option><option>Other</option></select>
+          </div>
+          <div class="form-group"><label>Phone</label><input id="regPhone"></div>
+        </div>
+        <div class="form-group mt-sm"><label>Email</label><input id="regEmail" type="email"></div>
+        <div class="form-group mt-sm"><label>Address</label><input id="regAddress"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="submitRegisterPatient()">Register</button>
+      </div>`);
+        }
+
+        async function submitRegisterPatient() {
+            try {
+                const body = {
+                    nhsNumber: document.getElementById('regNHS').value.trim(),
+                    firstName: document.getElementById('regFirst').value.trim(),
+                    lastName: document.getElementById('regLast').value.trim(),
+                    dob: document.getElementById('regDOB').value,
+                    gender: document.getElementById('regGender').value,
+                    phone: document.getElementById('regPhone').value.trim(),
+                    email: document.getElementById('regEmail').value.trim(),
+                    address: document.getElementById('regAddress').value.trim(),
+                };
+                const data = await api('/api/patients', { method: 'POST', body: JSON.stringify(body) });
+                toast(data.message);
+                closeModal();
+                searchPatients();
+            } catch (err) { toast(err.message, 'error'); }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           APPOINTMENTS (Receptionist / Admin)
+           ═══════════════════════════════════════════════════════════════ */
+        async function renderAppointments(mc) {
+            mc.innerHTML = `
+      <div class="page-header flex" style="justify-content:space-between;align-items:start">
+        <div><h1>Appointments</h1><p>Book and view appointments</p></div>
+        <button class="btn btn-primary" onclick="openBookAppointmentModal()">+ Book Appointment</button>
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Date</th><th>Time</th><th>Patient</th><th>Doctor</th><th>Reason</th><th>Status</th></tr></thead>
+        <tbody id="apptTable"><tr><td colspan="6" class="text-muted" style="text-align:center">Loading…</td></tr></tbody>
+      </table></div>`;
+            try {
+                const data = await api('/api/appointments/all');
+                if (data.length === 0) { document.getElementById('apptTable').innerHTML = '<tr><td colspan="6" class="text-muted" style="text-align:center">No appointments found</td></tr>'; return; }
+                document.getElementById('apptTable').innerHTML = data.map(a => `
+          <tr>
+            <td>${formatDate(a.Date)}</td><td>${formatTime(a.Time)}</td>
+            <td class="fw-600">${a.PatientName}</td><td>${a.DoctorName}</td>
+            <td>${a.ReasonForVisit || '—'}</td><td>${statusBadge(a.Status)}</td>
+          </tr>`).join('');
+            } catch (err) { toast(err.message, 'error'); }
+        }
+
+        async function openBookAppointmentModal() {
+            const doctors = await api('/api/doctors');
+            openModal(`
+      <div class="modal-header"><h3>Book Appointment</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Patient *</label>
+          <div class="autocomplete-wrap">
+            <input id="bookPatientInput" placeholder="Type patient name or NHS…" oninput="patientTypeahead(this.value)">
+            <div class="autocomplete-list" id="bookPatientList"></div>
+            <input type="hidden" id="bookPatientId">
+          </div>
+        </div>
+        <div class="form-group mt-sm"><label>Doctor *</label>
+          <select id="bookDoctorId">
+            <option value="">Select doctor…</option>
+            ${doctors.map(d => `<option value="${d.DoctorID}">${d.Name} — ${d.Specialisation} (£${parseFloat(d.ConsultationFee).toFixed(2)})</option>`).join('')}
+          </select>
+        </div>
+        <div class="form-row mt-sm">
+          <div class="form-group"><label>Date *</label><input id="bookDate" type="date"></div>
+          <div class="form-group"><label>Time *</label><input id="bookTime" type="time"></div>
+        </div>
+        <div class="form-group mt-sm"><label>Reason for Visit</label><input id="bookReason" placeholder="e.g. Chest pain, routine check-up"></div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="submitBookAppointment()">Book</button>
+      </div>`);
+        }
+
+        let typeaheadTimeout;
+        async function patientTypeahead(q) {
+            clearTimeout(typeaheadTimeout);
+            const list = document.getElementById('bookPatientList');
+            if (q.length < 1) { list.classList.remove('show'); return; }
+            typeaheadTimeout = setTimeout(async () => {
+                try {
+                    const data = await api(`/api/patients/search?q=${encodeURIComponent(q)}`);
+                    if (data.length === 0) { list.innerHTML = '<div class="autocomplete-item text-muted">No patients found</div>'; list.classList.add('show'); return; }
+                    list.innerHTML = data.map(p => `
+              <div class="autocomplete-item" onclick="selectPatient(${p.PatientID}, '${p.Name.replace(/'/g, "\\'")}')">
+                <div class="ac-name">${p.Name}</div>
+                <div class="ac-meta">NHS: ${p.NHSNumber} · Age ${calcAge(p.DOB)} · ${p.Gender || '—'}</div>
+              </div>`).join('');
+                    list.classList.add('show');
+                } catch (err) { console.error(err); }
+            }, 250);
+        }
+
+        function selectPatient(id, name) {
+            document.getElementById('bookPatientId').value = id;
+            document.getElementById('bookPatientInput').value = name;
+            document.getElementById('bookPatientList').classList.remove('show');
+        }
+
+        async function submitBookAppointment() {
+            try {
+                const body = {
+                    patientId: parseInt(document.getElementById('bookPatientId').value),
+                    doctorId: parseInt(document.getElementById('bookDoctorId').value),
+                    date: document.getElementById('bookDate').value,
+                    time: document.getElementById('bookTime').value,
+                    reasonForVisit: document.getElementById('bookReason').value.trim(),
+                };
+                if (!body.patientId) throw new Error('Please select a patient from the dropdown.');
+                if (!body.doctorId) throw new Error('Please select a doctor.');
+                const data = await api('/api/appointments', { method: 'POST', body: JSON.stringify(body) });
+                toast(data.message);
+                closeModal();
+                if (currentPage === 'appointments') loadPage('appointments');
+            } catch (err) { toast(err.message, 'error'); }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           DOCTOR – TODAY'S APPOINTMENTS
+           ═══════════════════════════════════════════════════════════════ */
+        async function renderDoctorToday(mc) {
+            mc.innerHTML = `
+      <div class="page-header"><h1>Today's Appointments</h1><p>${new Date().toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })}</p></div>
+      <div class="card-grid" id="todayCards"><div class="card empty-state"><div class="icon">⏳</div><p>Loading…</p></div></div>`;
+            try {
+                const data = await api('/api/appointments/today');
+                if (data.length === 0) {
+                    document.getElementById('todayCards').innerHTML = '<div class="card empty-state"><div class="icon">📭</div><p>No appointments scheduled for today.</p></div>';
+                    return;
+                }
+                document.getElementById('todayCards').innerHTML = data.map(a => `
+          <div class="card">
+            <div class="flex items-center gap-md" style="margin-bottom:16px">
+              <div style="flex:1">
+                <h3 class="fw-700">${a.PatientName}</h3>
+                <div class="text-muted" style="font-size:.8rem">NHS: ${a.NHSNumber} · Age ${a.PatientAge} · ${genderBadge(a.Gender)}</div>
+              </div>
+              <div style="text-align:right">
+                <div class="fw-600">${formatTime(a.Time)}</div>
+                ${statusBadge(a.Status)}
+              </div>
+            </div>
+            <p class="text-muted" style="font-size:.85rem;margin-bottom:16px">📝 ${a.ReasonForVisit || 'No reason provided'}</p>
+            <div class="flex gap-sm" style="flex-wrap:wrap">
+              <button class="btn btn-primary btn-sm" onclick="openPrescriptionModal(${a.AppointmentID})">💊 Prescribe</button>
+              <button class="btn btn-warning btn-sm" onclick="openTestModal(${a.AppointmentID})">🔬 Order Test</button>
+              <button class="btn btn-success btn-sm" onclick="openReportModal(${a.AppointmentID})">📋 Write Report</button>
+              ${a.InvoiceID ? `<button class="btn btn-ghost btn-sm" onclick="viewInvoice(${a.InvoiceID})">💷 View Invoice</button>` : ''}
+              <button class="btn btn-ghost btn-sm" onclick="viewAppointmentHistory(${a.AppointmentID})">📂 History</button>
+            </div>
+          </div>`).join('');
+            } catch (err) { toast(err.message, 'error'); }
+        }
+
+        /* ── Prescription Modal ──────────────────────────────────────── */
+        let rxMedicines = [];
+        async function openPrescriptionModal(appointmentId) {
+            rxMedicines = await api('/api/medicines');
+            openModal(`
+      <div class="modal-header"><h3>💊 Issue Prescription</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="modal-body">
+        <div id="rxItems"></div>
+        <button class="btn btn-ghost btn-sm mt-md" onclick="addRxRow()">+ Add Medicine</button>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="submitPrescription(${appointmentId})">Issue Prescription</button>
+      </div>`);
+            addRxRow();
+        }
+
+        function addRxRow() {
+            const container = document.getElementById('rxItems');
+            const idx = container.children.length;
+            const div = document.createElement('div');
+            div.className = 'rx-item-row';
+            div.innerHTML = `
+      <div class="form-group"><label>Medicine</label>
+        <select id="rxMed${idx}">
+          <option value="">Select…</option>
+          ${rxMedicines.map(m => `<option value="${m.MedicineID}">${m.MedicineName} (Stock: ${m.StockLevel}, £${parseFloat(m.UnitPrice).toFixed(2)})</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group"><label>Qty</label><input id="rxQty${idx}" type="number" min="1" value="1"></div>
+      <div class="form-group"><label>Dosage Instructions</label><input id="rxDose${idx}" placeholder="e.g. Twice daily after food"></div>
+      <button class="btn btn-danger btn-xs" style="align-self:end;height:38px" onclick="this.parentElement.remove()">✕</button>`;
+            container.appendChild(div);
+        }
+
+        async function submitPrescription(appointmentId) {
+            const container = document.getElementById('rxItems');
+            const rows = container.querySelectorAll('.rx-item-row');
+            const items = [];
+            rows.forEach((row, i) => {
+                const medId = document.getElementById(`rxMed${i}`)?.value;
+                const qty = document.getElementById(`rxQty${i}`)?.value;
+                const dose = document.getElementById(`rxDose${i}`)?.value;
+                if (medId && qty && dose) items.push({ medicineId: parseInt(medId), quantity: parseInt(qty), dosageInstructions: dose });
+            });
+            if (items.length === 0) { toast('Add at least one medicine.', 'error'); return; }
+            try {
+                const data = await api('/api/prescriptions', { method: 'POST', body: JSON.stringify({ appointmentId, items }) });
+                toast(data.message);
+                closeModal();
+                loadPage('doctor-today');
+            } catch (err) { toast(err.message, 'error'); }
+        }
+
+        /* ── Test Modal (Dropdown from TestPrice) ────────────────────── */
+        async function openTestModal(appointmentId) {
+            const tests = await api('/api/test-prices');
+            openModal(`
+      <div class="modal-header"><h3>🔬 Order Medical Test</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Select Test *</label>
+          <select id="testSelect">
+            <option value="">Choose a test…</option>
+            ${tests.map(t => `<option value="${t.TestPriceID}">${t.TestName} — £${parseFloat(t.Price).toFixed(2)}</option>`).join('')}
+          </select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-warning" onclick="submitTest(${appointmentId})">Order Test</button>
+      </div>`);
+        }
+
+        async function submitTest(appointmentId) {
+            const testPriceId = parseInt(document.getElementById('testSelect').value);
+            if (!testPriceId) { toast('Please select a test.', 'error'); return; }
+            try {
+                const data = await api('/api/medical-tests', { method: 'POST', body: JSON.stringify({ appointmentId, testPriceId }) });
+                toast(data.message);
+                closeModal();
+                loadPage('doctor-today');
+            } catch (err) { toast(err.message, 'error'); }
+        }
+
+        /* ── Patient Report Modal ────────────────────────────────────── */
+        function openReportModal(appointmentId) {
+            openModal(`
+      <div class="modal-header"><h3>📋 Patient Report</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Diagnosis *</label>
+          <textarea id="reportDiagnosis" rows="3" placeholder="Enter diagnosis…"></textarea>
+        </div>
+        <div class="form-group mt-md">
+          <label>Treatment Plan *</label>
+          <textarea id="reportTreatment" rows="4" placeholder="Enter treatment plan, follow-up instructions…"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-success" onclick="submitReport(${appointmentId})">Save & Complete</button>
+      </div>`);
+        }
+
+        async function submitReport(appointmentId) {
+            const diagnosis = document.getElementById('reportDiagnosis').value.trim();
+            const treatmentPlan = document.getElementById('reportTreatment').value.trim();
+            if (!diagnosis || !treatmentPlan) { toast('Diagnosis and treatment plan are required.', 'error'); return; }
+            try {
+                const data = await api('/api/patient-reports', { method: 'POST', body: JSON.stringify({ appointmentId, diagnosis, treatmentPlan }) });
+                toast(data.message);
+                closeModal();
+                loadPage('doctor-today');
+            } catch (err) { toast(err.message, 'error'); }
+        }
+
+        /* ── View Appointment History ────────────────────────────────── */
+        async function viewAppointmentHistory(appointmentId) {
+            try {
+                const [prescriptions, tests, report] = await Promise.allSettled([
+                    api(`/api/prescriptions/appointment/${appointmentId}`),
+                    api(`/api/medical-tests/appointment/${appointmentId}`),
+                    api(`/api/patient-reports/appointment/${appointmentId}`),
+                ]);
+                const rxData = prescriptions.status === 'fulfilled' ? prescriptions.value : [];
+                const testData = tests.status === 'fulfilled' ? tests.value : [];
+                const reportData = report.status === 'fulfilled' ? report.value : null;
+
+                let html = `<div class="modal-header"><h3>📂 Appointment Details</h3><button class="modal-close" onclick="closeModal()">✕</button></div><div class="modal-body">`;
+
+                // Report
+                if (reportData) {
+                    html += `<div class="card" style="margin-bottom:16px;border-left:3px solid var(--success)">
+              <h4 class="fw-600" style="margin-bottom:8px">📋 Doctor's Report</h4>
+              <p style="font-size:.85rem"><strong>Diagnosis:</strong> ${reportData.Diagnosis}</p>
+              <p style="font-size:.85rem;margin-top:6px"><strong>Treatment Plan:</strong> ${reportData.TreatmentPlan}</p>
+              <p class="text-dim" style="font-size:.75rem;margin-top:8px">Written by ${reportData.DoctorName} on ${formatDate(reportData.GeneratedDate)}</p>
+            </div>`;
+                }
+
+                // Prescriptions
+                if (rxData.length > 0) {
+                    html += `<div class="card" style="margin-bottom:16px;border-left:3px solid var(--primary)">
+              <h4 class="fw-600" style="margin-bottom:8px">💊 Prescriptions</h4>
+              <div class="table-wrap"><table><thead><tr><th>Medicine</th><th>Qty</th><th>Dosage</th><th>Price</th></tr></thead><tbody>`;
+                    rxData.forEach(r => {
+                        html += `<tr><td>${r.MedicineName}</td><td>${r.Quantity}</td><td>${r.DosageInstructions}</td><td>£${(parseFloat(r.UnitPrice) * r.Quantity).toFixed(2)}</td></tr>`;
+                    });
+                    html += `</tbody></table></div></div>`;
+                }
+
+                // Tests
+                if (testData.length > 0) {
+                    html += `<div class="card" style="border-left:3px solid var(--warning)">
+              <h4 class="fw-600" style="margin-bottom:8px">🔬 Medical Tests</h4>
+              <div class="table-wrap"><table><thead><tr><th>Test</th><th>Date</th><th>Result</th><th>Price</th></tr></thead><tbody>`;
+                    testData.forEach(t => {
+                        html += `<tr><td>${t.TestName}</td><td>${formatDate(t.TestDate)}</td><td>${t.Result || 'Pending'}</td><td>£${t.Price ? parseFloat(t.Price).toFixed(2) : '—'}</td></tr>`;
+                    });
+                    html += `</tbody></table></div></div>`;
+                }
+
+                if (!reportData && rxData.length === 0 && testData.length === 0) {
+                    html += `<div class="empty-state"><div class="icon">📭</div><p>No records yet for this appointment.</p></div>`;
+                }
+
+                html += `</div>`;
+                openModal(html);
+            } catch (err) { toast(err.message, 'error'); }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           PHARMACY
+           ═══════════════════════════════════════════════════════════════ */
+        async function renderPharmacy(mc) {
+            mc.innerHTML = `
+      <div class="page-header"><h1>Pharmacy Inventory</h1><p>Medicine stock levels and pricing</p></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Medicine</th><th>Stock</th><th>Reorder Level</th><th>Status</th><th>Unit Price</th></tr></thead>
+        <tbody id="pharmacyTable"><tr><td colspan="5" class="text-muted" style="text-align:center">Loading…</td></tr></tbody>
+      </table></div>`;
+            try {
+                const data = await api('/api/pharmacy');
+                document.getElementById('pharmacyTable').innerHTML = data.map(m => {
+                    const low = m.StockLevel <= m.ReorderLevel;
+                    return `<tr>
+              <td class="fw-600">${m.MedicineName}</td>
+              <td class="${low ? 'text-danger fw-700' : ''}">${m.StockLevel}</td>
+              <td>${m.ReorderLevel}</td>
+              <td>${low ? '<span class="badge badge-cancelled">ORDER NOW</span>' : '<span class="badge badge-completed">Sufficient</span>'}</td>
+              <td>£${parseFloat(m.UnitPrice).toFixed(2)}</td>
+            </tr>`;
+                }).join('');
+            } catch (err) { toast(err.message, 'error'); }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           INVOICES
+           ═══════════════════════════════════════════════════════════════ */
+        async function renderInvoices(mc) {
+            mc.innerHTML = `
+      <div class="page-header"><h1>Unpaid Invoices</h1><p>Manage outstanding payments</p></div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Invoice #</th><th>Patient</th><th>Amount</th><th>Date</th><th>Due Date</th><th>Overdue</th><th>Actions</th></tr></thead>
+        <tbody id="invoiceTable"><tr><td colspan="7" class="text-muted" style="text-align:center">Loading…</td></tr></tbody>
+      </table></div>`;
+            try {
+                const data = await api('/api/invoices/unpaid');
+                if (data.length === 0) { document.getElementById('invoiceTable').innerHTML = '<tr><td colspan="7" class="text-muted" style="text-align:center">🎉 All invoices are paid!</td></tr>'; return; }
+                document.getElementById('invoiceTable').innerHTML = data.map(inv => `
+          <tr>
+            <td class="fw-600">#${inv.InvoiceID}</td>
+            <td>${inv.PatientName}</td>
+            <td class="fw-700">£${parseFloat(inv.Amount).toFixed(2)}</td>
+            <td>${formatDate(inv.InvoiceDate)}</td>
+            <td>${formatDate(inv.DueDate)}</td>
+            <td>${inv.DaysOverdue > 0 ? `<span class="text-danger fw-600">${inv.DaysOverdue} days</span>` : '<span class="text-success">Not yet</span>'}</td>
+            <td>
+              <button class="btn btn-ghost btn-xs" onclick="viewInvoice(${inv.InvoiceID})">View</button>
+              <button class="btn btn-success btn-xs" onclick="payInvoice(${inv.InvoiceID})">Mark Paid</button>
+            </td>
+          </tr>`).join('');
+            } catch (err) { toast(err.message, 'error'); }
+        }
+
+        async function payInvoice(id) {
+            if (!confirm('Mark this invoice as paid?')) return;
+            try {
+                const data = await api(`/api/invoices/${id}/pay`, { method: 'PUT' });
+                toast(data.message);
+                loadPage('invoices');
+            } catch (err) { toast(err.message, 'error'); }
+        }
+
+        async function viewInvoice(id) {
+            try {
+                const inv = await api(`/api/invoices/${id}`);
+                openModal(`
+          <div class="modal-header"><h3>💷 Invoice #${inv.InvoiceID}</h3><button class="modal-close no-print" onclick="closeModal()">✕</button></div>
+          <div class="modal-body">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px">
+              <div>
+                <p class="text-muted" style="font-size:.75rem">PATIENT</p>
+                <p class="fw-600">${inv.PatientName}</p>
+                <p class="text-muted" style="font-size:.8rem">NHS: ${inv.NHSNumber}</p>
+                <p class="text-muted" style="font-size:.8rem">${inv.Address || ''}</p>
+              </div>
+              <div style="text-align:right">
+                <p class="text-muted" style="font-size:.75rem">DOCTOR</p>
+                <p class="fw-600">${inv.DoctorName}</p>
+                <p class="text-muted" style="font-size:.8rem">${inv.Specialisation}</p>
+                <p class="text-muted" style="font-size:.8rem;margin-top:8px">Date: ${formatDate(inv.InvoiceDate)}</p>
+                <p class="text-muted" style="font-size:.8rem">Due: ${formatDate(inv.DueDate)}</p>
+                <p style="margin-top:4px">${statusBadge(inv.PaymentStatus)}</p>
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th>Description</th><th style="text-align:right">Qty</th><th style="text-align:right">Unit Price</th><th style="text-align:right">Total</th></tr></thead>
+                <tbody>
+                  ${inv.items.map(it => `<tr><td>${it.Description}</td><td style="text-align:right">${it.Quantity}</td><td style="text-align:right">£${parseFloat(it.UnitPrice).toFixed(2)}</td><td style="text-align:right">£${parseFloat(it.LineTotal).toFixed(2)}</td></tr>`).join('')}
+                </tbody>
+                <tfoot><tr><td colspan="3" style="text-align:right;font-weight:700;border-top:2px solid var(--border)">Total</td><td style="text-align:right;font-weight:700;font-size:1.1rem;border-top:2px solid var(--border)">£${parseFloat(inv.Amount).toFixed(2)}</td></tr></tfoot>
+              </table>
+            </div>
+          </div>
+          <div class="modal-footer no-print">
+            <button class="btn btn-ghost" onclick="closeModal()">Close</button>
+            <button class="btn btn-primary" onclick="window.print()">🖨️ Print</button>
+          </div>`);
+            } catch (err) { toast(err.message, 'error'); }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           DOCTORS (Admin)
+           ═══════════════════════════════════════════════════════════════ */
+        async function renderDoctors(mc) {
+            mc.innerHTML = `
+      <div class="page-header flex" style="justify-content:space-between;align-items:start">
+        <div><h1>Doctors</h1><p>Manage medical staff</p></div>
+        <button class="btn btn-primary" onclick="openAddDoctorModal()">+ Add Doctor</button>
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Name</th><th>Specialisation</th><th>Department</th><th>Consultation Fee</th><th>Phone</th><th>Email</th></tr></thead>
+        <tbody id="doctorTable"><tr><td colspan="6" class="text-muted" style="text-align:center">Loading…</td></tr></tbody>
+      </table></div>`;
+            try {
+                const data = await api('/api/doctors');
+                document.getElementById('doctorTable').innerHTML = data.map(d => `
+          <tr>
+            <td class="fw-600">${d.Name}</td><td>${d.Specialisation}</td><td>${d.Department || '—'}</td>
+            <td class="fw-600">£${parseFloat(d.ConsultationFee).toFixed(2)}</td>
+            <td>${d.Phone}</td><td>${d.Email}</td>
+          </tr>`).join('');
+            } catch (err) { toast(err.message, 'error'); }
+        }
+
+        async function openAddDoctorModal() {
+            const depts = await api('/api/departments');
+            openModal(`
+      <div class="modal-header"><h3>Add Doctor</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group"><label>Name *</label><input id="docName" placeholder="Dr First Last"></div>
+          <div class="form-group"><label>Specialisation *</label><input id="docSpec" placeholder="e.g. Cardiology"></div>
+        </div>
+        <div class="form-row mt-sm">
+          <div class="form-group"><label>Department</label>
+            <select id="docDept"><option value="">—</option>${depts.map(d => `<option value="${d.DepartmentID}">${d.Name}</option>`).join('')}</select>
+          </div>
+          <div class="form-group"><label>Consultation Fee (£)</label><input id="docFee" type="number" step="0.01" value="45.00"></div>
+        </div>
+        <div class="form-row mt-sm">
+          <div class="form-group"><label>Phone</label><input id="docPhone"></div>
+          <div class="form-group"><label>Email</label><input id="docEmail" type="email"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="submitAddDoctor()">Create Doctor</button>
+      </div>`);
+        }
+
+        async function submitAddDoctor() {
+            try {
+                const body = {
+                    name: document.getElementById('docName').value.trim(),
+                    specialisation: document.getElementById('docSpec').value.trim(),
+                    departmentId: parseInt(document.getElementById('docDept').value) || null,
+                    consultationFee: parseFloat(document.getElementById('docFee').value) || 45.00,
+                    phone: document.getElementById('docPhone').value.trim(),
+                    email: document.getElementById('docEmail').value.trim(),
+                };
+                const data = await api('/api/doctors', { method: 'POST', body: JSON.stringify(body) });
+                toast(data.message);
+                closeModal();
+                loadPage('doctors');
+            } catch (err) { toast(err.message, 'error'); }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           SYSTEM USERS (Admin)
+           ═══════════════════════════════════════════════════════════════ */
+        async function renderUsers(mc) {
+            mc.innerHTML = `
+      <div class="page-header flex" style="justify-content:space-between;align-items:start">
+        <div><h1>System Users</h1><p>Manage login accounts</p></div>
+        <button class="btn btn-primary" onclick="openAddUserModal()">+ Add User</button>
+      </div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>Username</th><th>Role</th><th>Linked Doctor</th><th>Created</th></tr></thead>
+        <tbody id="userTable"><tr><td colspan="4" class="text-muted" style="text-align:center">Loading…</td></tr></tbody>
+      </table></div>`;
+            try {
+                const data = await api('/api/users');
+                document.getElementById('userTable').innerHTML = data.map(u => `
+          <tr>
+            <td class="fw-600">${u.Username}</td>
+            <td>${statusBadge(u.Role)}</td>
+            <td>${u.DoctorName || '—'}</td>
+            <td>${formatDate(u.CreatedAt)}</td>
+          </tr>`).join('');
+            } catch (err) { toast(err.message, 'error'); }
+        }
+
+        function openAddUserModal() {
+            openModal(`
+      <div class="modal-header"><h3>Add System User</h3><button class="modal-close" onclick="closeModal()">✕</button></div>
+      <div class="modal-body">
+        <div class="form-row">
+          <div class="form-group"><label>Username *</label><input id="newUsername"></div>
+          <div class="form-group"><label>Password *</label><input id="newPassword" type="password"></div>
+        </div>
+        <div class="form-group mt-sm"><label>Role *</label>
+          <select id="newRole"><option>Receptionist</option><option>Doctor</option><option>BillingClerk</option><option>Admin</option></select>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="submitAddUser()">Create User</button>
+      </div>`);
+        }
+
+        async function submitAddUser() {
+            try {
+                const body = {
+                    username: document.getElementById('newUsername').value.trim(),
+                    password: document.getElementById('newPassword').value,
+                    role: document.getElementById('newRole').value,
+                };
+                const data = await api('/api/users', { method: 'POST', body: JSON.stringify(body) });
+                toast(data.message);
+                closeModal();
+                loadPage('users');
+            } catch (err) { toast(err.message, 'error'); }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           REPORTS
+           ═══════════════════════════════════════════════════════════════ */
+        async function renderReports(mc) {
+            mc.innerHTML = `
+      <div class="page-header"><h1>Reports</h1><p>Analytics and insights</p></div>
+      <div class="card-grid">
+        <div class="card" style="cursor:pointer" onclick="showMonthlyBilling()">
+          <h3 class="fw-600">💷 Monthly Billing</h3>
+          <p class="text-muted" style="font-size:.85rem;margin-top:4px">Revenue breakdown by month</p>
+        </div>
+        <div class="card" style="cursor:pointer" onclick="showDoctorStats()">
+          <h3 class="fw-600">🩺 Doctor Statistics</h3>
+          <p class="text-muted" style="font-size:.85rem;margin-top:4px">Patient count per doctor</p>
+        </div>
+        <div class="card" style="cursor:pointer" onclick="showLowStock()">
+          <h3 class="fw-600">⚠️ Low Stock Alerts</h3>
+          <p class="text-muted" style="font-size:.85rem;margin-top:4px">Medicines that need reordering</p>
+        </div>
+      </div>
+      <div id="reportResult" class="mt-lg"></div>`;
+        }
+
+        async function showMonthlyBilling() {
+            try {
+                const data = await api('/api/reports/monthly-billing');
+                const months = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                document.getElementById('reportResult').innerHTML = `
+          <div class="card"><h3 class="fw-600" style="margin-bottom:16px">Monthly Billing Report</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Month</th><th>Invoices</th><th>Paid</th><th>Pending</th><th>Total</th></tr></thead>
+            <tbody>${data.map(r => `<tr><td>${months[r.Month]} ${r.Year}</td><td>${r.TotalInvoices}</td>
+              <td class="text-success">£${parseFloat(r.PaidAmount).toFixed(2)}</td>
+              <td class="text-warning">£${parseFloat(r.PendingAmount).toFixed(2)}</td>
+              <td class="fw-700">£${parseFloat(r.TotalAmount).toFixed(2)}</td></tr>`).join('')}
+            </tbody></table></div></div>`;
+            } catch (err) { toast(err.message, 'error'); }
+        }
+
+        async function showDoctorStats() {
+            try {
+                const data = await api('/api/reports/doctor-patient-count');
+                document.getElementById('reportResult').innerHTML = `
+          <div class="card"><h3 class="fw-600" style="margin-bottom:16px">Doctor Statistics</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Doctor</th><th>Specialisation</th><th>Unique Patients</th><th>Total Appointments</th></tr></thead>
+            <tbody>${data.map(r => `<tr><td class="fw-600">${r.DoctorName}</td><td>${r.Specialisation}</td><td>${r.UniquePatients}</td><td>${r.TotalAppointments}</td></tr>`).join('')}
+            </tbody></table></div></div>`;
+            } catch (err) { toast(err.message, 'error'); }
+        }
+
+        async function showLowStock() {
+            try {
+                const data = await api('/api/reports/low-stock');
+                if (data.length === 0) { document.getElementById('reportResult').innerHTML = '<div class="card empty-state"><div class="icon">✅</div><p>All medicines are sufficiently stocked!</p></div>'; return; }
+                document.getElementById('reportResult').innerHTML = `
+          <div class="card"><h3 class="fw-600" style="margin-bottom:16px">⚠️ Low Stock Medicines</h3>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Medicine</th><th>Current Stock</th><th>Reorder Level</th><th>Unit Price</th></tr></thead>
+            <tbody>${data.map(m => `<tr><td class="fw-600">${m.MedicineName}</td><td class="text-danger fw-700">${m.StockLevel}</td><td>${m.ReorderLevel}</td><td>£${parseFloat(m.UnitPrice).toFixed(2)}</td></tr>`).join('')}
+            </tbody></table></div></div>`;
+            } catch (err) { toast(err.message, 'error'); }
+        }
+    </script>
+</body>
+
+</html>
