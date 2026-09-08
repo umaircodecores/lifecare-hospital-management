@@ -119,51 +119,48 @@ http://localhost:3000
 
 ---
 
-## ⚡ Deploying to Vercel (Step-by-Step)
+## 💻 Testing & Demo Workflow
 
-The project includes a ready-to-use [`vercel.json`](file:///d:/Desktop/Assignments/Semester%2002/Database/LifeCare_Website_Source_Code/vercel.json) configuration that packages the Express API and single-page frontend into Vercel Serverless Functions automatically.
+You can test every department workflow by logging in with the respective demo account:
 
-### Step 1: Push Repository to GitHub
-Make sure all your latest code is pushed to your GitHub repository:
-```
-https://github.com/umaircodecores/lifecare-hospital-management
-```
+### 1. Reception Desk Workflow
+1. Log in as `reception.elsa` / `password123`.
+2. Click **"Register Patient"** and enter patient details (use NHS number format: `123 456 7890`).
+3. Click **"Book Appointment"** to assign the patient to a doctor (e.g. Dr Sarah Jones).
+4. The system automatically validates against double-booking.
 
-### Step 2: Import into Vercel
-1. Log in to your [Vercel Dashboard](https://vercel.com/dashboard).
-2. Click the **"Add New..."** button (top right) and select **"Project"**.
-3. Under **"Import Git Repository"**, find `lifecare-hospital-management` and click **"Import"**.
+### 2. Clinical / Doctor Workflow
+1. Log out and log in as `dr.sarah.jones` / `password123`.
+2. View **"Today's Appointments"** to see your booked queue.
+3. Open an appointment to:
+   - Prescribe medication (verifies stock levels and auto-deducts from pharmacy).
+   - Order diagnostic medical tests (e.g. Full Blood Count, ECG, MRI).
 
-### Step 3: Project Configuration & Settings
-On the **"Configure Project"** screen, adjust the following settings:
+### 3. Cashier & Billing Workflow
+1. Log out and log in as `billing.natalie` / `password123`.
+2. Open **"Unpaid Invoices"** to review consultation fees and pharmacy/test totals.
+3. Click **"Mark as Paid"** once simulated payment is received.
+4. Check **"Low Stock Alerts"** for inventory needing reorder.
 
-| Setting | Value / Action | Notes |
-| :--- | :--- | :--- |
-| **Project Name** | `lifecare-hospital-management` | You can keep default or rename |
-| **Framework Preset** | **Other** | Detected automatically via `vercel.json` |
-| **Root Directory** | `./` | Leave as default root |
-| **Build Command** | Leave empty / default | Express is handled by `@vercel/node` |
-| **Output Directory** | Leave empty / default | Handled automatically |
-| **Install Command** | `npm install` | Vercel runs this automatically |
+---
 
-### Step 4: Configure Environment Variables
-Expand the **"Environment Variables"** accordion section on the Vercel setup page and add the following keys:
+## 📡 REST API Summary
 
-| Key | Example Value | Description |
-| :--- | :--- | :--- |
-| `JWT_SECRET` | `LifeCare_Super_Secret_Key_2025` | Strong random secret for signing tokens |
-| `DB_SERVER` | `your-db-host.database.windows.net` | Hostname of your cloud SQL Server |
-| `DB_NAME` | `LifeCareDB` | Name of your database |
-| `DB_USER` | `cloud_sql_user` | SQL Server authentication username |
-| `DB_PASSWORD` | `YourSecurePassword!` | SQL Server authentication password |
-| `DB_ENCRYPT` | `true` | Required for Azure SQL and cloud providers |
-
-> 💡 **Database Note for Cloud Hosting**: Because Vercel serverless functions run in the cloud, they cannot connect to `localhost` on your local laptop. For full live functionality, point `DB_SERVER` to an online SQL Server (such as **Azure SQL Database**, **AWS RDS SQL Server**, or a cloud SQL instance).
-
-### Step 5: Deploy
-1. Click the **"Deploy"** button.
-2. Vercel will build and deploy your application in ~1 minute.
-3. Once complete, you will receive your live `.vercel.app` production URL!
+| Method | Endpoint | Authorized Roles | Description |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/login` | Public | Authenticates credentials & issues JWT |
+| `POST` | `/api/patients` | Receptionist, Admin | Registers new patient |
+| `GET` | `/api/patients` | Authenticated | Searches patient directory |
+| `GET` | `/api/doctors` | Authenticated | Lists active doctors & consultation fees |
+| `POST` | `/api/appointments` | Receptionist, Admin | Schedules patient appointment |
+| `GET` | `/api/appointments/today`| Doctor, Admin | Fetches doctor's appointment queue |
+| `POST` | `/api/prescriptions` | Doctor, Admin | Issues prescription & updates pharmacy stock |
+| `POST` | `/api/medical-tests` | Doctor, Admin | Orders diagnostic lab tests |
+| `GET` | `/api/pharmacy` | Authenticated | Full pharmacy stock list |
+| `GET` | `/api/pharmacy/low-stock` | Admin, BillingClerk | Retrieves medicines at/below reorder level |
+| `GET` | `/api/invoices/unpaid` | BillingClerk, Admin | Retrieves pending invoices & days overdue |
+| `PUT` | `/api/invoices/:id/pay` | BillingClerk, Admin | Marks invoice as settled |
+| `GET` | `/api/reports/monthly-billing` | Admin, BillingClerk | Monthly billing & revenue report |
 
 ---
 
