@@ -34,16 +34,38 @@ A robust, enterprise-grade Hospital Management System web application designed t
 
 ---
 
-## 🔐 Demo Credentials
+## 📸 Interface Preview
 
-> 🔒 **Security Notice**: To protect live deployments and production data, the primary Administrator (`admin.chris`) credentials are withheld from public documentation. Please use the following role-based demo accounts to explore the application:
+<div align="center">
+  <h3>🔐 Unified Authentication</h3>
+  <img src="docs/screenshots/01_login_screen.png" alt="Login Screen" width="90%">
+  <br><br>
+  <h3>🛡️ Administrator Command Dashboard</h3>
+  <img src="docs/screenshots/02_admin_dashboard.png" alt="Admin Dashboard" width="90%">
+  <br><br>
+  <h3>📋 Receptionist Patient Intake & Appointments</h3>
+  <img src="docs/screenshots/03_receptionist_portal.png" alt="Reception Desk" width="90%">
+  <br><br>
+  <h3>🩺 Doctor Clinical Queue & Consultations</h3>
+  <img src="docs/screenshots/04_doctor_workspace.png" alt="Doctor Workspace" width="90%">
+  <br><br>
+  <h3>💳 Cashier Invoicing & Billing Management</h3>
+  <img src="docs/screenshots/05_billing_invoices.png" alt="Billing Portal" width="90%">
+</div>
 
-| Role | Username | Password | Access Capabilities |
+---
+
+## 🔐 Open-Source Demo Credentials
+
+All demonstration accounts are pre-configured in the database seed records with the uniform password: **`password123`**.
+
+| Role | Username | Password | Capabilities & Access Scope |
 | :--- | :--- | :--- | :--- |
-| **Doctor** (Cardiology) | `dr.sarah.jones` | `password123` | Patient consults, test orders, prescriptions |
-| **Doctor** (Cardiology) | `dr.michael.chen` | `password123` | Clinical records, diagnostics, patient care |
+| **Admin** | `admin.chris` | `password123` | System oversight, staff accounts, revenue audits, analytics |
+| **Doctor** (Cardiology) | `dr.sarah.jones` | `password123` | Appointment queue, prescription orders, lab test orders |
+| **Doctor** (Cardiology) | `dr.michael.chen` | `password123` | Clinical consults, medical records, patient history |
 | **Doctor** (General Med) | `dr.emma.clarke` | `password123` | Consultations, treatment plans, prescriptions |
-| **Receptionist** | `reception.elsa` | `password123` | Patient registration, scheduling, booking |
+| **Receptionist** | `reception.elsa` | `password123` | Patient registration, scheduling, booking desk |
 | **Receptionist** | `reception.tom` | `password123` | Front desk workflows, appointment management |
 | **Billing Clerk** | `billing.natalie` | `password123` | Invoicing, payment reconciliations, stock monitoring |
 | **Billing Clerk** | `billing.sarah` | `password123` | Invoicing, accounts receivable |
@@ -54,6 +76,8 @@ A robust, enterprise-grade Hospital Management System web application designed t
 
 ```
 lifecare-hospital-management/
+├── docs/
+│   └── screenshots/        # Visual documentation and portal interface previews
 ├── public/                 # Static frontend assets
 │   └── index.html          # Responsive single-page interface (UI, CSS, Client JS)
 ├── auth.js                 # JWT verification & role authorization middleware
