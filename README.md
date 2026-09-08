@@ -34,27 +34,6 @@ A robust, enterprise-grade Hospital Management System web application designed t
 
 ---
 
-## 📸 Interface Preview
-
-<div align="center">
-  <h3>🔐 Unified Authentication</h3>
-  <img src="docs/screenshots/01_login_screen.png" alt="Login Screen" width="90%">
-  <br><br>
-  <h3>🛡️ Administrator Command Dashboard</h3>
-  <img src="docs/screenshots/02_admin_dashboard.png" alt="Admin Dashboard" width="90%">
-  <br><br>
-  <h3>📋 Receptionist Patient Intake & Appointments</h3>
-  <img src="docs/screenshots/03_receptionist_portal.png" alt="Reception Desk" width="90%">
-  <br><br>
-  <h3>🩺 Doctor Clinical Queue & Consultations</h3>
-  <img src="docs/screenshots/04_doctor_workspace.png" alt="Doctor Workspace" width="90%">
-  <br><br>
-  <h3>💳 Cashier Invoicing & Billing Management</h3>
-  <img src="docs/screenshots/05_billing_invoices.png" alt="Billing Portal" width="90%">
-</div>
-
----
-
 ## 🔐 Open-Source Demo Credentials
 
 All demonstration accounts are pre-configured in the database seed records with the uniform password: **`password123`**.
@@ -76,8 +55,6 @@ All demonstration accounts are pre-configured in the database seed records with 
 
 ```
 lifecare-hospital-management/
-├── docs/
-│   └── screenshots/        # Visual documentation and portal interface previews
 ├── public/                 # Static frontend assets
 │   └── index.html          # Responsive single-page interface (UI, CSS, Client JS)
 ├── auth.js                 # JWT verification & role authorization middleware
